@@ -16,11 +16,11 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	const [fontSelected, setFontSelected] = useState(fontFamilyOptions[0]);
-	const [fontSizeSelected, setFontSizeSelected] = useState(fontSizeOptions[0]);
-	const [fontColorSelected, setFontColorSelected] = useState(fontColors[0]);
-	const [bgColorSelected, setBgColorSelected] = useState(backgroundColors[0]);
-	const [widthSelected, setWidthSelected] = useState(contentWidthArr[0]);
+	const [fontSelected, setFontSelected] = useState(defaultArticleState.fontFamilyOption);
+	const [fontSizeSelected, setFontSizeSelected] = useState(defaultArticleState.fontSizeOption);
+	const [fontColorSelected, setFontColorSelected] = useState(defaultArticleState.fontColor);
+	const [bgColorSelected, setBgColorSelected] = useState(defaultArticleState.backgroundColor);
+	const [widthSelected, setWidthSelected] = useState(defaultArticleState.contentWidth);
 
 
 	return (
@@ -28,11 +28,11 @@ const App = () => {
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-family': fontSelected.value,
+					'--font-size': fontSizeSelected.value,
+					'--font-color': fontColorSelected.value,
+					'--container-width': widthSelected.value,
+					'--bg-color': bgColorSelected.value,
 				} as CSSProperties
 			}>
 			<ArticleParamsForm>
@@ -75,7 +75,7 @@ const App = () => {
 				></Select>
 
 			</ArticleParamsForm>
-			<Article fontSelected={fontSelected.className}/>
+			<Article/>
 		</div>
 	);
 };
