@@ -1,5 +1,3 @@
-import { ArrowButton } from 'components/arrow-button';
-
 import styles from './ArticleParamsForm.module.scss';
 import { ReactNode, useState } from 'react';
 import { classNames } from 'src/utils/utils';
@@ -11,15 +9,14 @@ import { Separator } from '../separator';
 
 interface PropsArticleParamsForm {
 	children: ReactNode;
+	arrowButton: ReactNode;
+	isOpen: boolean;
 }
 
-export const ArticleParamsForm = ({children} : PropsArticleParamsForm) => {
-	const [isOpen, setIsOpen] = useState(false);
-
-
+export const ArticleParamsForm = ({children, arrowButton, isOpen} : PropsArticleParamsForm) => {
 	return (
 		<>
-			<ArrowButton onClick={()=>setIsOpen(!isOpen)} isOpen={isOpen}/>
+			{arrowButton}
 			<aside className={classNames(styles.container, isOpen && styles.container_open)}>
 			<form className={styles.form}>
 				{children}

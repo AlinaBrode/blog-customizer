@@ -3,6 +3,7 @@ import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
+import { ArrowButton } from './components/arrow-button';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
 import { Button } from 'components/button';
 
@@ -22,6 +23,8 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
+	const [isOpen, setIsOpen] = useState(false);
+
 	const [fontSelected, setFontSelected] = useState(defaultArticleState.fontFamilyOption);
 	const [fontSizeSelected, setFontSizeSelected] = useState(defaultArticleState.fontSizeOption);
 	const [fontColorSelected, setFontColorSelected] = useState(defaultArticleState.fontColor);
@@ -34,7 +37,8 @@ const App = () => {
 	const [bgColorSelectedView, setBgColorSelectedView] = useState(defaultArticleState.backgroundColor);
 	const [widthSelectedView, setWidthSelectedView] = useState(defaultArticleState.contentWidth);
 
-	function translateState() {
+	function translateState(evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		evt.preventDefault();
 		setFontSelectedView(fontSelected);
 		setFontSizeSelectedView(fontSizeSelected);
 		setFontColorSelectedView(fontColorSelected);
@@ -62,8 +66,10 @@ const App = () => {
 					'--container-width': widthSelectedView.value,
 					'--bg-color': bgColorSelectedView.value,
 				} as CSSProperties
-			}>
-			<ArticleParamsForm>
+			}
+			onClick={()=>{setIsOpen(false);}}
+			>
+			<ArticleParamsForm arrowButton={<ArrowButton onClick={(evt)=>{evt.stopPropagation(); setIsOpen(!isOpen);}} isOpen={isOpen}/>} isOpen={isOpen}>
 					<Text as="h2" weight={800} size={31} uppercase>задайте параметры</Text>
 
 					<Select
@@ -106,7 +112,7 @@ const App = () => {
 
 					<div className={articleParamsStyles.bottomContainer}>
 						<Button title='Сбросить' type='reset' onClick={restoreState}/>
-						<Button title='Применить' type={undefined} onClick={translateState}/>
+						<Button title='Применить' type='submit' onClick={(e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => translateState(e)}/>
 					</div>
 
 			</ArticleParamsForm>

@@ -4,7 +4,7 @@ import styles from './ArrowButton.module.scss';
 import { classNames } from 'src/utils/utils';
 
 /** Функция для обработки открытия/закрытия формы */
-export type OnClick = () => void;
+export type OnClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 
 interface ArrowButtonProps {
 	onClick?: OnClick,
