@@ -1,6 +1,6 @@
 import styles from './ArticleParamsForm.module.scss';
 import { ArrowButton } from '../arrow-button';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import { classNames } from 'src/utils/utils';
 import { Button } from '../button';
 
@@ -19,6 +19,7 @@ import {
 } from '../../constants/articleProps';
 
 import articleParamsStyles from './ArticleParamsForm.module.scss';
+import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 
 
 interface PropsArticleParamsForm {
@@ -51,9 +52,19 @@ export const ArticleParamsForm = ({
 	restoreState
 
 }: PropsArticleParamsForm) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const rootRef = useRef<HTMLDivElement>(null);
+	const onClose = () => setIsOpen(false);
 
 	const reversePosition=() => setIsOpen(!isOpen);
+
+
+	useOutsideClickClose({
+		isOpen,
+		rootRef,
+		onClose,
+		onChange: setIsOpen
+	});
 
 	return (
 		<>
@@ -68,7 +79,9 @@ export const ArticleParamsForm = ({
 				className={classNames(
 					styles.container,
 					isOpen && styles.container_open
-				)} onClick={(e)=>e.stopPropagation()}>
+				)} onClick={(e)=>e.stopPropagation()}
+				ref={rootRef}
+				>
 				<form className={styles.form}>
 
 				<Text as='h2' weight={800} size={31} uppercase>
