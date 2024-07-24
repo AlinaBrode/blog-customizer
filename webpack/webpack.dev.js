@@ -11,6 +11,18 @@ module.exports = {
 		port: 8080, // порт, чтобы открывать сайт по адресу localhost:8080, но можно поменять порт
 		open: true, // сайт будет открываться сам при запуске npm run dev
 		hot: true,
+		watchFiles: {
+			paths: ['src/**/*'],
+			options: {
+				usePolling: true,
+				interval: 1000,
+				aggregateTimeout: 300,
+			},
+		},
 	},
+	watchOptions: {
+		poll: 1000,
+		ignored: /node_modules/,
+	  },
 	plugins: [new ReactRefreshWebpackPlugin()],
 };
