@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties, useState, MouseEvent } from 'react';
+import { StrictMode, CSSProperties, useState, MouseEvent, FormEvent } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
@@ -18,21 +18,22 @@ const root = createRoot(domNode);
 
 const App = () => {
 
-	const [fontSelected, setFontSelected] = useState(
+	const [fontSelectedTune, setFontSelectedTune] = useState(
 		defaultArticleState.fontFamilyOption
 	);
-	const [fontSizeSelected, setFontSizeSelected] = useState(
+	const [fontSizeSelectedTune, setFontSizeSelectedTune] = useState(
 		defaultArticleState.fontSizeOption
 	);
-	const [fontColorSelected, setFontColorSelected] = useState(
+	const [fontColorSelectedTune, setFontColorSelectedTune] = useState(
 		defaultArticleState.fontColor
 	);
-	const [bgColorSelected, setBgColorSelected] = useState(
+	const [bgColorSelectedTune, setBgColorSelectedTune] = useState(
 		defaultArticleState.backgroundColor
 	);
-	const [widthSelected, setWidthSelected] = useState(
+	const [widthSelectedTune, setWidthSelectedTune] = useState(
 		defaultArticleState.contentWidth
 	);
+
 
 	const [fontSelectedView, setFontSelectedView] = useState(
 		defaultArticleState.fontFamilyOption
@@ -50,23 +51,56 @@ const App = () => {
 		defaultArticleState.contentWidth
 	);
 
+
+	const [fontSelectedMemo, setFontSelectedMemo] = useState(
+		defaultArticleState.fontFamilyOption
+	);
+	const [fontSizeSelectedMemo, setFontSizeSelectedMemo] = useState(
+		defaultArticleState.fontSizeOption
+	);
+	const [fontColorSelectedMemo, setFontColorSelectedMemo] = useState(
+		defaultArticleState.fontColor
+	);
+	const [bgColorSelectedMemo, setBgColorSelectedMemo] = useState(
+		defaultArticleState.backgroundColor
+	);
+	const [widthSelectedMemo, setWidthSelectedMemo] = useState(
+		defaultArticleState.contentWidth
+	);
+
+
+
 	function translateState(
-		evt: MouseEvent
+		evt: FormEvent
 	) {
 		evt.preventDefault();
-		setFontSelectedView(fontSelected);
-		setFontSizeSelectedView(fontSizeSelected);
-		setFontColorSelectedView(fontColorSelected);
-		setBgColorSelectedView(bgColorSelected);
-		setWidthSelectedView(widthSelected);
+		setFontSelectedView(fontSelectedTune);
+		setFontSizeSelectedView(fontSizeSelectedTune);
+		setFontColorSelectedView(fontColorSelectedTune);
+		setBgColorSelectedView(bgColorSelectedTune);
+		setWidthSelectedView(widthSelectedTune);
 	}
 
 	function restoreState() {
-		setFontSelected(fontSelectedView);
-		setFontSizeSelected(fontSizeSelectedView);
-		setFontColorSelected(fontColorSelectedView);
-		setBgColorSelected(bgColorSelectedView);
-		setWidthSelected(widthSelectedView);
+		setFontSelectedView(fontSelectedMemo);
+		setFontSizeSelectedView(fontSizeSelectedMemo);
+		setFontColorSelectedView(fontColorSelectedMemo);
+		setBgColorSelectedView(bgColorSelectedMemo);
+		setWidthSelectedView(widthSelectedMemo);
+
+		setFontSelectedTune(fontSelectedMemo);
+		setFontSizeSelectedTune(fontSizeSelectedMemo);
+		setFontColorSelectedTune(fontColorSelectedMemo);
+		setBgColorSelectedTune(bgColorSelectedMemo);
+		setWidthSelectedTune(widthSelectedMemo);
+	}
+
+	function memorizeState() {
+		setFontSelectedMemo(fontSelectedView);
+		setFontSizeSelectedMemo(fontSizeSelectedView);
+		setFontColorSelectedMemo(fontColorSelectedView);
+		setBgColorSelectedMemo(bgColorSelectedView);
+		setWidthSelectedMemo(widthSelectedView);
 	}
 
 	return (
@@ -81,22 +115,21 @@ const App = () => {
 					'--bg-color': bgColorSelectedView.value,
 				} as CSSProperties
 			}
-			onClick={() => {
-				// setIsOpen(false);
-			}}>
+		>
 			<ArticleParamsForm
-				fontSelected={fontSelected}
-				setFontSelected={setFontSelected}
-				fontSizeSelected={fontSizeSelected}
-				setFontSizeSelected={setFontSizeSelected}
-				fontColorSelected={fontColorSelected}
-				setFontColorSelected={setFontColorSelected}
-				bgColorSelected={bgColorSelected}
-				setBgColorSelected={setBgColorSelected}
-				widthSelected={widthSelected}
-				setWidthSelected={setWidthSelected}
+				fontSelected={fontSelectedTune}
+				setFontSelected={setFontSelectedTune}
+				fontSizeSelected={fontSizeSelectedTune}
+				setFontSizeSelected={setFontSizeSelectedTune}
+				fontColorSelected={fontColorSelectedTune}
+				setFontColorSelected={setFontColorSelectedTune}
+				bgColorSelected={bgColorSelectedTune}
+				setBgColorSelected={setBgColorSelectedTune}
+				widthSelected={widthSelectedTune}
+				setWidthSelected={setWidthSelectedTune}
 				translateState={translateState}
 				restoreState={restoreState}
+				memorizeState={memorizeState}
 				/>
 			<Article />
 		</div>

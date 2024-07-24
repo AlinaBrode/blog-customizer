@@ -1,6 +1,6 @@
 import styles from './ArticleParamsForm.module.scss';
 import { ArrowButton } from '../arrow-button';
-import { MouseEvent, useRef, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import { classNames } from 'src/utils/utils';
 import { Button } from '../button';
 
@@ -33,8 +33,9 @@ interface PropsArticleParamsForm {
 	setBgColorSelected: (selected: OptionType) => void;
 	widthSelected:OptionType;
 	setWidthSelected:(selected: OptionType) => void;
-	translateState: (evt: MouseEvent) => void;
+	translateState: (evt: FormEvent) => void;
 	restoreState: () => void;
+	memorizeState: () => void;
 }
 
 export const ArticleParamsForm = ({
@@ -49,22 +50,33 @@ export const ArticleParamsForm = ({
 	widthSelected,
 	setWidthSelected,
 	translateState,
-	restoreState
+	restoreState,
+	memorizeState
 
 }: PropsArticleParamsForm) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 	const rootRef = useRef<HTMLDivElement>(null);
-	const onClose = () => setIsOpen(false);
+	const onClose = () => setIsMenuOpen(false);
 
-	const reversePosition=() => setIsOpen(!isOpen);
+	const reversePosition=() => setIsMenuOpen(!isMenuOpen);
 
 
 	useOutsideClickClose({
-		isOpen,
+		isOpen: isMenuOpen,
 		rootRef,
 		onClose,
-		onChange: setIsOpen
+		onChange: setIsMenuOpen
 	});
+
+	useEffect(
+		() => {
+			if (isMenuOpen) {
+				memorizeState();
+			}
+		}
+		,
+		[isMenuOpen]
+	)
 
 	return (
 		<>
@@ -73,16 +85,18 @@ export const ArticleParamsForm = ({
 							evt.stopPropagation();
 							reversePosition();
 						}}
-						isOpen={isOpen}
+						isOpen={isMenuOpen}
 					/>
 			<aside
 				className={classNames(
 					styles.container,
-					isOpen && styles.container_open
+					isMenuOpen && styles.container_open
 				)} onClick={(e)=>e.stopPropagation()}
 				ref={rootRef}
 				>
-				<form className={styles.form}>
+				<form className={styles.form}
+				   onSubmit={(evt: FormEvent) =>
+							translateState(evt)}>
 
 				<Text as='h2' weight={800} size={31} uppercase>
 					задайте параметры
@@ -126,9 +140,6 @@ export const ArticleParamsForm = ({
 					<Button
 						title='Применить'
 						type='submit'
-						onClick={(evt: MouseEvent<HTMLButtonElement>) =>
-							translateState(evt)
-						}
 					/>
 				</div>
 
